@@ -1,15 +1,883 @@
-Finanzielle Lage (z.B. Einkommen, Ausgaben)
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Investitionsberater WebApp</title>
+<style>
 
-Anliegen/Ziele
+    :root {
 
-Investitionswunsch
+      --bg: #f4f7fb;
 
-Sicher investieren
-Ausgewogen investieren
-Risikoreich investieren
+      --card: #ffffff;
 
+      --primary: #1f4fd1;
 
+      --primary-dark: #173ca0;
 
-Probleme / Herausforderungen
+      --text: #1f2937;
 
-Empfehlung anzeigen
+      --muted: #6b7280;
+
+      --border: #dbe3ef;
+
+      --success: #0f9d58;
+
+      --warning: #d97706;
+
+      --danger: #dc2626;
+
+      --shadow: 0 10px 30px rgba(31, 79, 209, 0.08);
+
+    }
+ 
+    * { box-sizing: border-box; }
+ 
+    body {
+
+      margin: 0;
+
+      font-family: Arial, Helvetica, sans-serif;
+
+      background: linear-gradient(180deg, #eef4ff 0%, var(--bg) 100%);
+
+      color: var(--text);
+
+    }
+ 
+    .container {
+
+      max-width: 1150px;
+
+      margin: 0 auto;
+
+      padding: 24px;
+
+    }
+ 
+    .hero {
+
+      background: linear-gradient(135deg, #1f4fd1, #5b8cff);
+
+      color: white;
+
+      border-radius: 22px;
+
+      padding: 32px;
+
+      box-shadow: var(--shadow);
+
+      margin-bottom: 24px;
+
+    }
+ 
+    .hero h1 {
+
+      margin: 0 0 10px;
+
+      font-size: 2.2rem;
+
+    }
+ 
+    .hero p {
+
+      margin: 0;
+
+      font-size: 1.05rem;
+
+      line-height: 1.6;
+
+      max-width: 850px;
+
+    }
+ 
+    .disclaimer {
+
+      margin-top: 16px;
+
+      background: rgba(255,255,255,0.14);
+
+      border: 1px solid rgba(255,255,255,0.25);
+
+      padding: 12px 14px;
+
+      border-radius: 14px;
+
+      font-size: 0.95rem;
+
+    }
+ 
+    .grid {
+
+      display: grid;
+
+      grid-template-columns: 1.1fr 0.9fr;
+
+      gap: 24px;
+
+    }
+ 
+    .card {
+
+      background: var(--card);
+
+      border: 1px solid var(--border);
+
+      border-radius: 20px;
+
+      box-shadow: var(--shadow);
+
+      padding: 24px;
+
+    }
+ 
+    .card h2 {
+
+      margin-top: 0;
+
+      font-size: 1.35rem;
+
+    }
+ 
+    .section-title {
+
+      margin: 26px 0 12px;
+
+      font-size: 1.05rem;
+
+      color: var(--primary-dark);
+
+    }
+ 
+    .form-grid {
+
+      display: grid;
+
+      grid-template-columns: 1fr 1fr;
+
+      gap: 14px;
+
+    }
+ 
+    label {
+
+      display: block;
+
+      font-size: 0.95rem;
+
+      font-weight: bold;
+
+      margin-bottom: 6px;
+
+    }
+ 
+    input, select, textarea {
+
+      width: 100%;
+
+      padding: 12px 13px;
+
+      border: 1px solid var(--border);
+
+      border-radius: 12px;
+
+      font-size: 0.98rem;
+
+      background: #fff;
+
+      color: var(--text);
+
+    }
+ 
+    textarea {
+
+      min-height: 96px;
+
+      resize: vertical;
+
+    }
+ 
+    .full { grid-column: 1 / -1; }
+ 
+    .checkbox-group {
+
+      display: grid;
+
+      gap: 10px;
+
+      margin-top: 8px;
+
+    }
+ 
+    .checkbox-item {
+
+      display: flex;
+
+      align-items: center;
+
+      gap: 10px;
+
+      background: #f8fbff;
+
+      border: 1px solid var(--border);
+
+      border-radius: 12px;
+
+      padding: 10px 12px;
+
+    }
+ 
+    .checkbox-item input {
+
+      width: auto;
+
+      transform: scale(1.15);
+
+    }
+ 
+    .actions {
+
+      display: flex;
+
+      gap: 12px;
+
+      margin-top: 24px;
+
+      flex-wrap: wrap;
+
+    }
+ 
+    button {
+
+      border: none;
+
+      border-radius: 12px;
+
+      padding: 13px 18px;
+
+      font-size: 1rem;
+
+      font-weight: bold;
+
+      cursor: pointer;
+
+      transition: transform 0.15s ease, opacity 0.15s ease;
+
+    }
+ 
+    button:hover {
+
+      transform: translateY(-1px);
+
+      opacity: 0.96;
+
+    }
+ 
+    .primary-btn {
+
+      background: var(--primary);
+
+      color: white;
+
+    }
+ 
+    .secondary-btn {
+
+      background: #e8eefc;
+
+      color: var(--primary-dark);
+
+    }
+ 
+    .placeholder {
+
+      color: var(--muted);
+
+      line-height: 1.7;
+
+      background: #f8fbff;
+
+      border: 1px dashed var(--border);
+
+      border-radius: 16px;
+
+      padding: 18px;
+
+    }
+ 
+    .result-block {
+
+      margin-top: 18px;
+
+      padding: 18px;
+
+      border: 1px solid var(--border);
+
+      border-radius: 16px;
+
+      background: #fbfdff;
+
+    }
+ 
+    .badge-row {
+
+      display: flex;
+
+      gap: 10px;
+
+      flex-wrap: wrap;
+
+      margin: 10px 0 18px;
+
+    }
+ 
+    .badge {
+
+      padding: 8px 12px;
+
+      border-radius: 999px;
+
+      font-size: 0.9rem;
+
+      font-weight: bold;
+
+      background: #ebf2ff;
+
+      color: var(--primary-dark);
+
+      border: 1px solid #cfe0ff;
+
+    }
+ 
+    .badge.warning { background: #fff7ed; color: var(--warning); border-color: #fed7aa; }
+
+    .badge.danger { background: #fef2f2; color: var(--danger); border-color: #fecaca; }
+
+    .badge.success { background: #ecfdf3; color: var(--success); border-color: #bbf7d0; }
+ 
+    ul {
+
+      padding-left: 20px;
+
+      line-height: 1.7;
+
+    }
+ 
+    .allocation {
+
+      display: grid;
+
+      gap: 10px;
+
+      margin-top: 10px;
+
+    }
+ 
+    .bar-wrap {
+
+      background: #ebf1fb;
+
+      border-radius: 999px;
+
+      overflow: hidden;
+
+      height: 12px;
+
+    }
+ 
+    .bar {
+
+      height: 12px;
+
+      background: linear-gradient(90deg, #1f4fd1, #7da7ff);
+
+      border-radius: 999px;
+
+    }
+ 
+    .alloc-item {
+
+      font-size: 0.95rem;
+
+    }
+ 
+    .small {
+
+      color: var(--muted);
+
+      font-size: 0.9rem;
+
+    }
+ 
+    @media (max-width: 920px) {
+
+      .grid { grid-template-columns: 1fr; }
+
+    }
+ 
+    @media (max-width: 640px) {
+
+      .form-grid { grid-template-columns: 1fr; }
+
+      .hero h1 { font-size: 1.8rem; }
+
+    }
+</style>
+</head>
+<body>
+<div class="container">
+<section class="hero">
+<h1>Investitionsberater WebApp</h1>
+<p>
+
+        Diese klickbare Prototype-WebApp unterstützt Nutzer:innen dabei, ihre finanzielle Lage,
+
+        Ziele und Investitionswünsche einzuschätzen und daraus eine verständliche Empfehlung abzuleiten.
+</p>
+<div class="disclaimer">
+
+        Hinweis: Dies ist ein schulischer Prototyp und keine echte Finanzberatung. Die Auswertung basiert auf einfachen Regeln.
+</div>
+</section>
+ 
+    <div class="grid">
+<section class="card">
+<h2>1. Angaben eingeben</h2>
+ 
+        <div class="section-title">Finanzielle Lage</div>
+<div class="form-grid">
+<div>
+<label for="income">Monatliches Einkommen (€)</label>
+<input type="number" id="income" placeholder="z. B. 2800" min="0" />
+</div>
+<div>
+<label for="expenses">Monatliche Ausgaben (€)</label>
+<input type="number" id="expenses" placeholder="z. B. 1900" min="0" />
+</div>
+<div>
+<label for="savings">Aktuelles Erspartes (€)</label>
+<input type="number" id="savings" placeholder="z. B. 8000" min="0" />
+</div>
+<div>
+<label for="debt">Schulden (€)</label>
+<input type="number" id="debt" placeholder="z. B. 2000" min="0" />
+</div>
+<div>
+<label for="emergency">Notgroschen vorhanden?</label>
+<select id="emergency">
+<option value="nein">Nein</option>
+<option value="teilweise">Teilweise</option>
+<option value="ja">Ja</option>
+</select>
+</div>
+<div>
+<label for="investAmount">Geplanter Investitionsbetrag (€)</label>
+<input type="number" id="investAmount" placeholder="z. B. 300" min="0" />
+</div>
+</div>
+ 
+        <div class="section-title">Ziele und Investitionswünsche</div>
+<div class="form-grid">
+<div>
+<label for="goal">Hauptziel</label>
+<select id="goal">
+<option value="sparen">Sparen</option>
+<option value="vermoegen">Vermögen aufbauen</option>
+<option value="altersvorsorge">Altersvorsorge</option>
+<option value="kurzfristig">Kurzfristiges Ziel</option>
+</select>
+</div>
+<div>
+<label for="horizon">Anlagehorizont</label>
+<select id="horizon">
+<option value="kurz">Kurzfristig (0–3 Jahre)</option>
+<option value="mittel">Mittelfristig (3–7 Jahre)</option>
+<option value="lang">Langfristig (7+ Jahre)</option>
+</select>
+</div>
+<div>
+<label for="risk">Risikowunsch</label>
+<select id="risk">
+<option value="sicher">Eher sicher</option>
+<option value="ausgewogen">Ausgewogen</option>
+<option value="risikoreich">Risikoreich</option>
+</select>
+</div>
+<div>
+<label for="knowledge">Finanzwissen</label>
+<select id="knowledge">
+<option value="wenig">Wenig</option>
+<option value="mittel">Mittel</option>
+<option value="hoch">Hoch</option>
+</select>
+</div>
+<div class="full">
+<label for="concern">Anliegen / Wunsch genauer beschreiben</label>
+<textarea id="concern" placeholder="z. B. Ich möchte langfristig Vermögen aufbauen, habe aber wenig Erfahrung und möchte nicht zu viel Risiko eingehen."></textarea>
+</div>
+</div>
+ 
+        <div class="section-title">Mögliche Probleme</div>
+<div class="checkbox-group">
+<label class="checkbox-item"><input type="checkbox" id="problemDebt" /> Hohe Schulden belasten mein Budget</label>
+<label class="checkbox-item"><input type="checkbox" id="problemSpending" /> Meine Ausgaben sind aktuell zu hoch</label>
+<label class="checkbox-item"><input type="checkbox" id="problemReserve" /> Ich habe kaum finanzielle Rücklagen</label>
+<label class="checkbox-item"><input type="checkbox" id="problemUnclear" /> Ich bin bei Investitionen unsicher</label>
+</div>
+ 
+        <div class="actions">
+<button class="primary-btn" onclick="analyzeInvestment()">Beratung erstellen</button>
+<button class="secondary-btn" onclick="fillExample()">Beispieldaten laden</button>
+<button class="secondary-btn" onclick="resetForm()">Zurücksetzen</button>
+</div>
+</section>
+ 
+      <section class="card">
+<h2>2. Individuelle Beratung</h2>
+<div id="resultArea" class="placeholder">
+
+          Nach dem Klick auf <strong>„Beratung erstellen“</strong> erscheint hier eine verständliche Empfehlung mit Strategie, Begründung, Aufteilung und Risiken.
+</div>
+</section>
+</div>
+</div>
+ 
+  <script>
+
+    function euro(value) {
+
+      return new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 }).format(value || 0);
+
+    }
+ 
+    function getValue(id) {
+
+      return document.getElementById(id).value;
+
+    }
+ 
+    function getNumber(id) {
+
+      return Number(document.getElementById(id).value) || 0;
+
+    }
+ 
+    function checked(id) {
+
+      return document.getElementById(id).checked;
+
+    }
+ 
+    function fillExample() {
+
+      document.getElementById('income').value = 2800;
+
+      document.getElementById('expenses').value = 1900;
+
+      document.getElementById('savings').value = 7000;
+
+      document.getElementById('debt').value = 1000;
+
+      document.getElementById('emergency').value = 'teilweise';
+
+      document.getElementById('investAmount').value = 250;
+
+      document.getElementById('goal').value = 'vermoegen';
+
+      document.getElementById('horizon').value = 'lang';
+
+      document.getElementById('risk').value = 'ausgewogen';
+
+      document.getElementById('knowledge').value = 'mittel';
+
+      document.getElementById('concern').value = 'Ich möchte mit einem überschaubaren Betrag starten und langfristig Vermögen aufbauen.';
+
+      document.getElementById('problemDebt').checked = false;
+
+      document.getElementById('problemSpending').checked = false;
+
+      document.getElementById('problemReserve').checked = true;
+
+      document.getElementById('problemUnclear').checked = true;
+
+    }
+ 
+    function resetForm() {
+
+      ['income','expenses','savings','debt','investAmount','concern'].forEach(id => document.getElementById(id).value = '');
+
+      ['emergency','goal','horizon','risk','knowledge'].forEach(id => document.getElementById(id).selectedIndex = 0);
+
+      ['problemDebt','problemSpending','problemReserve','problemUnclear'].forEach(id => document.getElementById(id).checked = false);
+
+      document.getElementById('resultArea').className = 'placeholder';
+
+      document.getElementById('resultArea').innerHTML = 'Nach dem Klick auf <strong>„Beratung erstellen“</strong> erscheint hier eine verständliche Empfehlung mit Strategie, Begründung, Aufteilung und Risiken.';
+
+    }
+ 
+    function analyzeInvestment() {
+
+      const income = getNumber('income');
+
+      const expenses = getNumber('expenses');
+
+      const savings = getNumber('savings');
+
+      const debt = getNumber('debt');
+
+      const investAmount = getNumber('investAmount');
+
+      const emergency = getValue('emergency');
+
+      const goal = getValue('goal');
+
+      const horizon = getValue('horizon');
+
+      const risk = getValue('risk');
+
+      const knowledge = getValue('knowledge');
+
+      const concern = getValue('concern').trim();
+ 
+      const problemDebt = checked('problemDebt');
+
+      const problemSpending = checked('problemSpending');
+
+      const problemReserve = checked('problemReserve');
+
+      const problemUnclear = checked('problemUnclear');
+ 
+      if (!income || !expenses || !investAmount) {
+
+        document.getElementById('resultArea').className = 'result-block';
+
+        document.getElementById('resultArea').innerHTML = '<div class="badge-row"><span class="badge danger">Unvollständige Eingabe</span></div><p>Bitte gib mindestens Einkommen, Ausgaben und den geplanten Investitionsbetrag an.</p>';
+
+        return;
+
+      }
+ 
+      const freeCash = income - expenses;
+
+      const savingsRate = income > 0 ? Math.round((freeCash / income) * 100) : 0;
+
+      const debtHigh = debt > savings * 0.5 || debt > 5000 || problemDebt;
+
+      const spendingHigh = freeCash < investAmount || savingsRate < 10 || problemSpending;
+
+      const reserveWeak = emergency === 'nein' || problemReserve || savings < expenses * 2;
+
+      const beginner = knowledge === 'wenig' || problemUnclear;
+ 
+      let profile = 'Stabiler Start';
+
+      let strategy = '';
+
+      let explanation = [];
+
+      let warnings = [];
+
+      let nextSteps = [];
+
+      let allocation = [];
+ 
+      if (debtHigh || spendingHigh || reserveWeak) {
+
+        profile = 'Erst absichern, dann investieren';
+
+        strategy = 'Zuerst sollten finanzielle Grundlagen gestärkt werden. Bevor stärker investiert wird, ist es sinnvoll, Schulden zu reduzieren, Ausgaben zu prüfen und einen Notgroschen aufzubauen.';
+ 
+        explanation.push('Deine Angaben zeigen, dass die finanzielle Basis noch nicht stabil genug für eine offensivere Anlagestrategie ist.');
+
+        if (debtHigh) explanation.push('Schulden oder finanzielle Belastungen sollten möglichst priorisiert werden, da Zinskosten Renditen auffressen können.');
+
+        if (spendingHigh) explanation.push('Der frei verfügbare Betrag ist aktuell eher knapp. Eine kleinere Sparrate wäre realistischer als ein hoher Investitionsbetrag.');
+
+        if (reserveWeak) explanation.push('Ein Notgroschen hilft dabei, unerwartete Ausgaben abzufangen, ohne Investitionen vorzeitig verkaufen zu müssen.');
+ 
+        allocation = [
+
+          { label: 'Notgroschen / Liquidität', value: 60 },
+
+          { label: 'Schuldenabbau / Ausgabenoptimierung', value: 30 },
+
+          { label: 'Vorsichtige ETF-Sparrate', value: 10 }
+
+        ];
+ 
+        warnings.push('Hohe Schulden oder fehlende Rücklagen erhöhen das finanzielle Risiko deutlich.');
+
+        warnings.push('Eine zu hohe Investitionssumme könnte im Alltag zu Engpässen führen.');
+ 
+        nextSteps.push('Monatliche Ausgaben analysieren und Einsparpotenziale finden.');
+
+        nextSteps.push('Notgroschen von mindestens 2–3 Monatsausgaben aufbauen.');
+
+        nextSteps.push('Danach mit kleiner, regelmäßiger ETF-Sparrate starten.');
+
+      } else {
+
+        if (risk === 'sicher' || horizon === 'kurz') {
+
+          profile = 'Sicherheitsorientiert';
+
+          strategy = 'Eine eher vorsichtige Strategie passt hier gut: ein größerer Anteil in breit gestreute, stabile Anlagen und ein Teil als flexible Reserve.';
+
+          allocation = [
+
+            { label: 'Breit gestreute ETFs', value: 50 },
+
+            { label: 'Tagesgeld / Reserve', value: 35 },
+
+            { label: 'Einzelaktien / Chancenanteil', value: 15 }
+
+          ];
+
+          explanation.push('Der Wunsch nach Sicherheit oder ein kurzer Zeithorizont spricht gegen zu starke Kursschwankungen.');
+
+          explanation.push('Breit gestreute ETFs sind im Prototyp die sinnvollste Basis für einen vorsichtigen Start.');
+
+        } else if (risk === 'ausgewogen') {
+
+          profile = 'Ausgewogene Strategie';
+
+          strategy = 'Eine Mischung aus Stabilität und Wachstum ist passend. Ein ETF-Schwerpunkt kann mit einem kleineren Chancenanteil ergänzt werden.';
+
+          allocation = [
+
+            { label: 'Breit gestreute ETFs', value: 70 },
+
+            { label: 'Defensive Reserve', value: 15 },
+
+            { label: 'Aktien / Themenanteil', value: 15 }
+
+          ];
+
+          explanation.push('Deine Angaben deuten auf ein vernünftiges Verhältnis zwischen Sicherheit und Renditechance hin.');
+
+          explanation.push('Mit einem klaren ETF-Fokus bleibt das Risiko überschaubar, während Wachstum möglich bleibt.');
+
+        } else {
+
+          profile = 'Wachstumsorientiert';
+
+          strategy = 'Bei langfristigem Horizont und höherer Risikobereitschaft kann ein größerer Anteil in chancenorientierte Anlagen sinnvoll sein.';
+
+          allocation = [
+
+            { label: 'Breit gestreute ETFs', value: 60 },
+
+            { label: 'Aktien / Wachstumsanteil', value: 30 },
+
+            { label: 'Liquiditätsreserve', value: 10 }
+
+          ];
+
+          explanation.push('Langfristige Ziele und höhere Risikobereitschaft erlauben stärkere Kursschwankungen.');
+
+          explanation.push('Trotzdem bleibt eine Grundstreuung über ETFs wichtig, um Klumpenrisiken zu vermeiden.');
+
+        }
+ 
+        if (beginner) {
+
+          explanation.push('Da du wenig Erfahrung oder Unsicherheit angegeben hast, sollte die Strategie möglichst einfach und verständlich bleiben.');
+
+          warnings.push('Komplexe Produkte oder häufiges Umschichten wären für den Einstieg eher ungeeignet.');
+
+          nextSteps.push('Mit einem einfachen ETF-Sparplan starten und Entwicklung regelmäßig prüfen.');
+
+        } else {
+
+          nextSteps.push('Investitionssumme konsequent monatlich anlegen und Strategie jährlich überprüfen.');
+
+        }
+ 
+        if (goal === 'altersvorsorge') {
+
+          explanation.push('Für Altersvorsorge ist ein langfristiger, disziplinierter Vermögensaufbau besonders passend.');
+
+        }
+
+        if (goal === 'kurzfristig') {
+
+          warnings.push('Kurzfristige Ziele passen oft schlechter zu schwankungsreichen Anlagen.');
+
+        }
+
+        if (goal === 'sparen') {
+
+          nextSteps.push('Sparplan mit realistischer Rate festlegen und unnötige Kosten reduzieren.');
+
+        }
+
+      }
+ 
+      const concernText = concern
+
+        ? `<p><strong>Berücksichtigtes Anliegen:</strong> ${concern}</p>`
+
+        : '';
+ 
+      const badges = [
+
+        `<span class="badge success">Profil: ${profile}</span>`,
+
+        `<span class="badge">Freier Betrag: ${euro(freeCash)}</span>`,
+
+        `<span class="badge ${savingsRate < 10 ? 'warning' : 'success'}">Sparquote: ${savingsRate}%</span>`
+
+      ].join('');
+ 
+      const allocationHtml = allocation.map(item => `
+<div class="alloc-item"><strong>${item.label}:</strong> ${item.value}%</div>
+<div class="bar-wrap"><div class="bar" style="width:${item.value}%"></div></div>
+
+      `).join('');
+ 
+      const warningsHtml = warnings.length
+
+        ? `<ul>${warnings.map(w => `<li>${w}</li>`).join('')}</ul>`
+
+        : '<p>Aktuell keine besonderen Warnhinweise aus dem Prototyp erkannt.</p>';
+ 
+      const nextStepsHtml = nextSteps.length
+
+        ? `<ul>${nextSteps.map(s => `<li>${s}</li>`).join('')}</ul>`
+
+        : '';
+ 
+      document.getElementById('resultArea').className = 'result-block';
+
+      document.getElementById('resultArea').innerHTML = `
+<div class="badge-row">${badges}</div>
+ 
+        <p><strong>Konkrete Investitionsstrategie:</strong><br>${strategy}</p>
+ 
+        <p><strong>Verständliche Begründung:</strong></p>
+<ul>${explanation.map(item => `<li>${item}</li>`).join('')}</ul>
+ 
+        <p><strong>Vorschlag zur Aufteilung:</strong></p>
+<div class="allocation">${allocationHtml}</div>
+ 
+        <p><strong>Hinweise und Risiken:</strong></p>
+
+        ${warningsHtml}
+ 
+        <p><strong>Nächste sinnvolle Schritte:</strong></p>
+
+        ${nextStepsHtml}
+ 
+        ${concernText}
+ 
+        <p class="small">Beispielhafte Empfehlung: „Basierend auf deinen Angaben empfehlen wir, zunächst deine finanzielle Basis zu stabilisieren und danach schrittweise in breit gestreute Anlagen zu investieren.“</p>
+
+      `;
+
+    }
+</script>
+</body>
+</html>
+ 
